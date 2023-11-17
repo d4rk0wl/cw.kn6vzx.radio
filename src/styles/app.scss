@@ -1,0 +1,122 @@
+@use './variables.scss';
+
+$webLightTheme: black;
+$webDarkTheme: white;
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.app {
+  height: 100%;
+}
+
+.topnav {
+  height: 70px;
+  border-bottom: 1px solid;
+}
+
+.topnav-content {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topnav-title {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.sidenav {
+  display: block;
+  position: absolute;
+  top: 70px;
+  left: 0px;
+  height: calc(100% - 70px);
+  width: 300px;
+  border-right: 1px solid
+}
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.sidenav-close {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+  padding: 5px;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.menu {
+  display: none;
+  padding: 10px;
+}
+
+.menu:hover {
+  cursor: pointer;
+}
+
+.main {
+  height: calc(100% - 80px);
+  margin-left: 300px;
+  display: flex;
+  justify-content: center;
+}
+
+.landing-page {
+  width: 100%;
+  padding: 20px 50px 0px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.testing {
+  border: 1px solid
+}
+
+@media only screen and (max-width: 600px) {
+  .sidenav {
+    top: 0;
+    backdrop-filter: blur(20px);
+    padding-top: 20px;
+    z-index: 100;
+    transition: all 1s ease-in-out;
+    &.close{
+      width: 0px;
+      display: none;
+    }
+    &.open{
+      width: 300px
+    }
+  }
+
+  .sidenav-close {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0px;
+  }
+
+  .menu {
+    display: block;
+  }
+}

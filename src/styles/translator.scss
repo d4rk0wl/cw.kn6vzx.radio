@@ -1,0 +1,17 @@
+@import './variables.scss';
+
+.wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-test {
+  width: 100%;
+}
+
+.input-word {
+  width: 80%;
+}

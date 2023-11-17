@@ -1,0 +1,28 @@
+@import './variables.scss';
+
+
+.settings {
+  max-width: 800px;
+  min-width: 300px;
+  width: 100%;
+}
+
+.settings-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  &.loading {
+    z-index: 100;
+    filter: blur(12px);
+  }
+}
+
+.switch-row {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px 0px 30px 0px;
+}
+
+.save {
+  max-width: 200px;
+}
