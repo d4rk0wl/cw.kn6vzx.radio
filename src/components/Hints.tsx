@@ -1,26 +1,34 @@
 import {
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableCellLayout
+  Card
 } from '@fluentui/react-components'
-
-import { useEffect } from 'react'
+import '../styles/hints.scss'
 import alphabet from '../data/alphabet'
+import { Oscillator } from '../utilities/Oscillator'
 
 export default function Hints():JSX.Element{
 
-  useEffect(() => {
-    Object.keys(alphabet).forEach((key: keyof typeof alphabet) => {
-      console.log(`Key - ${key} : Value - ${alphabet[key]}`)
-    })
-  }, [])
+  const playLetter = (letter:string) => {
+    Oscillator(letter)
+  }
 
   return(
     <>
-      <div>
-        <h1>Hints Table</h1>
+      <div className='hint-table'>
+        <div className="title">
+          <h1>Hints Table:</h1>
+        </div>
+        <div className='hint-wrapper'>
+          {Object.entries(alphabet).map((item) => {
+            return(
+              <Card onClick={() => playLetter(item[0])}>
+                <div className='hint-cell'>
+                  <span>{item[0]}:</span>
+                  <span className='hint-code'>{item[1]}</span>
+                </div>
+              </Card>
+            )
+          })}
+        </div>
       </div>
     </>
   )

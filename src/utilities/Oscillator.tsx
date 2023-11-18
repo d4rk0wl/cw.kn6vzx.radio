@@ -1,7 +1,7 @@
 import alphabet from '../data/alphabet.tsx'
 
 async function GenerateMorse(word:string){
-  const morse:[] = []
+  const morse:string[] = []
   word.split("").forEach((letter:string) => {
     morse.push(alphabet[letter.toLowerCase()])
     if(letter != " "){

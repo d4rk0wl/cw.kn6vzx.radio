@@ -13,8 +13,7 @@ export default function Translator(){
   const [ word, setWord ] = useState<string>()
   
   const submit = () => {
-    console.log(word)
-    Oscillator(word)
+    Oscillator(word!)
   }
 
   return(
