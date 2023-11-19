@@ -1,21 +1,53 @@
 import {
-  Slider,
   Label,
+  Slider,
   Dropdown,
   Option,
   Button,
-  Input
-} from '@fluentui/react-components';
-import { useState } from 'react';
-import Hints from '../components/Hints';
-import { Oscillator } from '../utilities/Oscillator';
-import '../styles/common.scss';
+  Input,
+  makeStyles,
+  Toaster,
+  Toast,
+  ToastTitle,
+  ToastBody,
+  useToastController,
+  useId,
+} from '@fluentui/react-components'
+import { useState } from 'react'
+import Hints from '../components/Hints'
+import { Oscillator } from '../utilities/Oscillator'
+import '../styles/practice.scss'
 
-export default function Words():JSX.Element{
-  const [ word, setWord ] = useState<string>('')
-  const [ wordLength, setwordLength] = useState<number>(4)
+const useStyles = makeStyles({
+  submit: {
+    maxWidth: '100px;',
+    marginLeft: 'calc(50% - 50px);'
+  },
+  input: {
+    fontSize: '2em;',
+    paddingTop: '10px;',
+    paddingBottom: '10px;',
+  }
+})
+
+export default function Testing(){
+  const toasterId = useId('toaster')
+  const { dispatchToast } = useToastController(toasterId)
+  const [ wordLength, setwordLength ] = useState<number>(4)
   const [ language, setLanguage ] = useState<string>('en')
-  const [ disabled, setDisabled ] = useState<boolean>(false)
+  const [ disabled, setDisabled ] = useState<boolean>()
+  const [ word, setWord ] = useState<string>()
+  const [ userInput, setuserInput ] = useState<string>()
+
+  const notify = (type:string, title:string, message:string ):void => {
+    dispatchToast(
+      <Toast>
+        <ToastTitle>{title}</ToastTitle>
+        <ToastBody>{message}</ToastBody>
+      </Toast>,
+      { position: 'top-end', intent: `${type}`}
+    )
+  }
 
   const getWord = ():void => {
     setDisabled(true)
@@ -29,18 +61,22 @@ export default function Words():JSX.Element{
     })
   }
 
-  const checkWord = (userInput:string) => {
-    if(userInput === word){
+  const checkWord = ():void => {
+    if(userInput?.toLocaleLowerCase() == word) {
       console.log('correct')
+      notify('success', 'Correct!', 'You have guessed the word correctly.');
     } else {
-      console.log('incorrect')
+      notify('error', 'Incorrect!', 'You have not guessed the word correctly.');
     }
   }
 
+  const styles = useStyles();
+
   return(
     <>
-      <div className="page-wrapper">
-        <div className="grid-half">
+      <Toaster toasterId={toasterId} />
+      <div className="content-wrapper">
+        <div className='grid-box'>
           <Label htmlFor={'wordLength'}>Word Length:&nbsp;{wordLength}</Label>
           <Slider id={'wordLength'} min={2} max={8} defaultValue={4} disabled={disabled} onChange={(e) => setwordLength(Number(e.target.value))} />
           <Label htmlFor={'language'}>Language:</Label>
@@ -50,13 +86,16 @@ export default function Words():JSX.Element{
             <Option>German</Option>
           </Dropdown>
         </div>
-        <div className="grid-half buttons">
+        <div className='grid-box buttons'>
           <Button appearance='primary' disabled={disabled} onClick={() => getWord()}>New word</Button>
-          <Button appearance='secondary' disabled={disabled}>Repeat Word</Button>
+          <Button appearance='secondary' disabled={disabled} onClick={() => Oscillator(word!)}>Repeat Word</Button>
         </div>
-        <div className="grid-col-span-2 field input">
-          <Input size={'large'} id='userInput' placeholder='Enter Word Here' />
-          <Button appearance='primary'>Submit</Button>
+        <div className='grid-box grid-col-span-2 input'>
+          <Input className={styles.input} size={'large'} id='userInput' placeholder='Enter Word Here' onChange={(e) => setuserInput(e.target.value)} />
+          <Button className={styles.submit} appearance='primary' onClick={() => checkWord()}>Submit</Button>
+        </div>
+        <div className="grid-box grid-col-span-2">
+          {window.localStorage.getItem('hints') == 'true' ? <Hints /> : <></>}
         </div>
       </div>
     </>

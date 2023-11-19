@@ -76,6 +76,7 @@ html, body {
   margin-left: 300px;
   display: flex;
   justify-content: center;
+  flex-wrap: auto;
 }
 
 .landing-page {
@@ -92,13 +93,28 @@ html, body {
   border: 1px solid
 }
 
-@media only screen and (max-width: 600px) {
+.help-modal {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 10%;
+  left: 10%;
+  height: 80%;
+  width: 80%;
+  z-index: 100;
+  background-color: white;
+  border: 1px solid green;
+}
+
+@media only screen and (max-width: 700px) {
   .sidenav {
     top: 0;
+    height: 100vh;
     backdrop-filter: blur(20px);
     padding-top: 20px;
     z-index: 100;
     transition: all 1s ease-in-out;
+    position: fixed;
     &.close{
       width: 0px;
       display: none;

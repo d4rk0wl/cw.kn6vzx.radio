@@ -1,0 +1,26 @@
+.content-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+}
+
+.grid-col-span-2 {
+  margin-top: 20px;
+  grid-column: span 2;
+  gap: 1em;
+  &.input {
+    border-top: 1px solid;
+  }
+}
+
+.grid-box {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+  &.buttons {
+    padding-top: 35px;
+    gap: 1em;
+  }
+}

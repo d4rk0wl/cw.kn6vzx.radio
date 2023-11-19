@@ -61,7 +61,7 @@ export function setDefault():void{
     window.localStorage.setItem('wpm', '20')
     window.localStorage.setItem('farnsworth', '0')
     window.localStorage.setItem('tone', '600')
-    window.localStorage.setItem('hints', 'false')
+    window.localStorage.setItem('hints', 'true')
     window.localStorage.setItem('saved_settings', 'true')
   }
 }

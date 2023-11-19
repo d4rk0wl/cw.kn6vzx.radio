@@ -6,11 +6,6 @@ import alphabet from '../data/alphabet'
 import { Oscillator } from '../utilities/Oscillator'
 
 export default function Hints():JSX.Element{
-
-  const playLetter = (letter:string) => {
-    Oscillator(letter)
-  }
-
   return(
     <>
       <div className='hint-table'>
@@ -19,17 +14,24 @@ export default function Hints():JSX.Element{
         </div>
         <div className='hint-wrapper'>
           {Object.entries(alphabet).map((item) => {
-            return(
-              <Card onClick={() => playLetter(item[0])}>
-                <div className='hint-cell'>
-                  <span>{item[0]}:</span>
-                  <span className='hint-code'>{item[1]}</span>
-                </div>
-              </Card>
-            )
+            if(item[0] !== " "){
+              return(
+                <Card key={item[0]} onClick={() => Oscillator(item[0])}>
+                  <div className='hint-cell'>
+                    <span>{item[0]}:</span>
+                    <span className='hint-code'>{item[1]}</span>
+                  </div>
+                </Card>
+              )
+            }
           })}
         </div>
       </div>
     </>
   )
 }
+
+/*
+@TODO -
+  Fix table breakpoints and padding of cards
+*/

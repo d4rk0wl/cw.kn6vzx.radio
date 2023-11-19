@@ -41,6 +41,7 @@ function App() {
   const [ darkMode, setdarkMode ] = useState<boolean>(false)
   const [ activePage, setactivePage ] = useState<string>('')
   const [ mobileNav, setmobileNav ] = useState<boolean>(true)
+  const [ helpModal, sethelpModal ] = useState<boolean>(false)
 
   useEffect(() => {
     console.log('initial render')
@@ -87,7 +88,7 @@ function App() {
               </div>
               <div className="topnav-links">
                 <QuestionCircle24Regular />
-                <Rss24Regular />
+                <Rss24Regular onClick={() => sethelpModal(true)} />
               </div>
             </div>
           </div>
@@ -106,6 +107,7 @@ function App() {
             {renderPage(activePage)}
           </div>
         </div>
+        {helpModal ? <div className='help-modal'>Help Modal</div> : <></>}
       </FluentProvider>
     </>
   )
