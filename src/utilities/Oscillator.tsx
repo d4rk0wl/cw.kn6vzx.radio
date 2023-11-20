@@ -1,5 +1,13 @@
 import alphabet from '../data/alphabet.tsx'
 
+export function GenerateMorseSync(word:string){
+  const morse:string[] = []
+  word.split("").forEach((letter:string) => {
+    morse.push(alphabet[letter.toLocaleLowerCase()] + " ")
+  })
+  return morse
+}
+
 async function GenerateMorse(word:string){
   const morse:string[] = []
   word.split("").forEach((letter:string) => {

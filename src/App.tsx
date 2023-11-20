@@ -84,7 +84,9 @@ function App() {
                   <GridDots28Regular onClick={() => setmobileNav(true)} />
                 </div>
                 <h1><i>KN6VZX</i> CW Practice</h1>
-                <LogoTest darkMode={darkMode} />
+                <span className='logo'>
+                  <LogoTest darkMode={darkMode} />
+                </span>
               </div>
               <div className="topnav-links">
                 <QuestionCircle24Regular />

@@ -7,7 +7,7 @@ import {
 import '../styles/translator.scss'
 
 import { Oscillator } from '../utilities/Oscillator'
-import Hints from '../components/Hints'
+import HintsTable from '../components/HintsTable'
 
 export default function Translator(){
   const [ word, setWord ] = useState<string>()
@@ -24,7 +24,7 @@ export default function Translator(){
           <Input className='input-word' size={'large'} id={'input'} onChange={(e) => setWord(e.target.value)} />
         </div>
         <Button appearance='primary' onClick={() => submit()}>Submit</Button>
-        <Hints />
+        <HintsTable />
       </div>
     </>
   )

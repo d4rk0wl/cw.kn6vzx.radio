@@ -93,6 +93,10 @@ html, body {
   border: 1px solid
 }
 
+.logo {
+  display: block;
+}
+
 .help-modal {
   position: absolute;
   display: flex;
@@ -106,7 +110,7 @@ html, body {
   border: 1px solid green;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 750px) {
   .sidenav {
     top: 0;
     height: 100vh;
@@ -134,5 +138,11 @@ html, body {
 
   .menu {
     display: block;
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  .logo {
+    display: none;
   }
 }
