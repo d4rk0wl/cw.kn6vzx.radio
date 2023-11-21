@@ -37,9 +37,14 @@ html, body {
   position: absolute;
   top: 70px;
   left: 0px;
-  height: calc(100% - 70px);
+  height: calc(100vh - 70px);
   width: 300px;
-  border-right: 1px solid
+  border-right: 1px solid;
+}
+
+.sticky-wrapper {
+  position: sticky;
+  top: 0;
 }
 
 .sidenav-content {
@@ -77,6 +82,7 @@ html, body {
   display: flex;
   justify-content: center;
   flex-wrap: auto;
+  border-left: 1px solid;
 }
 
 .landing-page {

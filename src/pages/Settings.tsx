@@ -18,31 +18,29 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
   const [farnsworth, setFarnsworth] = useState<number>(0)
   const [tone, setTone] = useState<number>(600)
   const [ hints, setHints ] = useState<boolean>(false)
-  const [ loading, setLoading ] = useState<boolean>(false)
 
   useEffect(() => {
     setWpm(Number(window.localStorage.getItem('wpm')))
-    setFarnsworth(Number(window.localStorage.getItem('farnsworth')))
+    setFarnsworth(Number(window.localStorage.getItem('farnsworth')) * 2)
     setTone(Number(window.localStorage.getItem('tone')))
-    setHints(JSON.parse(window.localStorage.getItem('hints')))
+    setHints((window.localStorage.getItem('hints')) == 'true') //Janky code to convert string to boolean
     console.log('here')
   }, [])
 
   const saveSettings = ():void => {
     window.localStorage.setItem('wpm', String(wpm))
-    window.localStorage.setItem('farnsworth', String(farnsworth))
+    window.localStorage.setItem('farnsworth', String(farnsworth / 2))
     window.localStorage.setItem('tone', String(tone))
     window.localStorage.setItem('hints', String(hints))
   }
-
   return(
     <>
       <div className="settings">
-        <div className={loading ? "settings-content loading" : "settings-content"}>
+        <div className='settings-content'>
           <Label htmlFor='wpm'>Words per Minute: {wpm}wpm</Label>
-          <Slider value={wpm} min={15} max={40} size={'medium'} onChange={(e) => setWpm(parseInt(e.target.value))} />
-          <Label htmlFor='farnsworth'>Farnsworth Delay: {farnsworth}s</Label>
-          <Slider value={farnsworth} min={0} max={10} size={'medium'} onChange={(e) => setFarnsworth(parseInt(e.target.value))} />
+          <Slider value={wpm} step={5} min={15} max={40} size={'medium'} onChange={(e) => setWpm(parseInt(e.target.value))} />
+          <Label htmlFor='farnsworth'>Farnsworth Delay: {farnsworth / 2}s</Label>
+          <Slider value={farnsworth} min={0} max={20} size={'medium'} onChange={(e) => setFarnsworth(parseInt(e.target.value))} />
           <Label htmlFor='tone'>Tone: {tone}hz</Label>
           <Slider value={tone} step={50} min={400} max={1000} size={'medium'} onChange={(e) => setTone(parseInt(e.target.value))} />
           <div className="switch-row">

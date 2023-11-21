@@ -26,8 +26,8 @@ const useStyles = makeStyles({
 
 type Props = {
   historyArray: {
-    word: string,
-    code: []
+    historicalWord: string,
+    code: string[]
   }[]
 }
 
@@ -43,9 +43,9 @@ export default function History({historyArray}:Props):JSX.Element{
           <div className={styles.historyTable}>
             {historyArray.map((item) => {
                 return(
-                  <div className={styles.historyItem} key={item.word}>
-                    <Card onClick={() => Oscillator(item.word)}>
-                      <span>{item.word}</span><span>{item.code.join('')}</span>
+                  <div className={styles.historyItem} key={item.historicalWord}>
+                    <Card onClick={() => Oscillator(item.historicalWord)}>
+                      <span>{item.historicalWord}</span><span>{item.code.join('')}</span>
                     </Card>
                   </div>
                 )

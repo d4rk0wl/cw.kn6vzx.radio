@@ -32,6 +32,7 @@ const useStyles = makeStyles({
     fontSize: '2em;',
     paddingTop: '10px;',
     paddingBottom: '10px;',
+    textAlign: 'center' //Why doesn't this work?
   }
 })
 
@@ -42,7 +43,7 @@ interface toastType {
 }
 
 
-export default function Testing(){
+export default function Words(){
   const toasterId = useId('toaster')
   const { dispatchToast } = useToastController(toasterId)
   const [ wordLength, setwordLength ] = useState<number>(4)
@@ -50,7 +51,9 @@ export default function Testing(){
   const [ disabled, setDisabled ] = useState<boolean>()
   const [ word, setWord ] = useState<string>('')
   const [ userInput, setuserInput ] = useState<string>('')
-  const [ history, setHistory ] = useState<object[]>([])
+
+  const [ history, setHistory ] = useState<{historicalWord: string, code: string[]}[]>([])
+  const [ hintWord, sethintWord ] = useState<string>('')
 
   const [failEffect] = useSound(fail)
   const [successEffect] = useSound(success)
@@ -80,12 +83,14 @@ export default function Testing(){
   }
 
   const checkWord = ():void => {
-    if(userInput?.toLocaleLowerCase() == word) {
+    if(userInput?.toLocaleLowerCase() == word && userInput.length > 0) {
       successEffect();
       notify({type: "success", title: "Correct", message: "You have guessed the word correctly!"});
-      setHistory(history => [...history, {word, code: GenerateMorseSync(word)}])
+      setHistory(history => [...history, {historicalWord: word, code: GenerateMorseSync(word)}])
+      sethintWord('')
     } else {
       failEffect();
+      sethintWord(userInput)
       notify({type: "error", title: "Incorrect!", message: "You have not guessed the word correctly"});
     }
   }
@@ -103,8 +108,6 @@ export default function Testing(){
         break;
     }
   }
-
-  console.log(language)
 
   return(
     <>
@@ -125,7 +128,7 @@ export default function Testing(){
           <Button appearance='secondary' disabled={disabled} onClick={() => Oscillator(word!)}>Repeat Word</Button>
         </div>
         <div className='grid-box grid-col-span-2 input'>
-          <HintsPreview userInput={userInput} word={word} />
+          {window.localStorage.getItem('hints') == 'true' ? <HintsPreview userInput={hintWord} word={word} /> : <></>}
           <Input className={styles.input} size={'large'} id='userInput' placeholder='Enter Word Here' onChange={(e) => setuserInput(e.target.value)} />
           <Button className={styles.submit} appearance='primary' onClick={() => checkWord()}>Submit</Button>
         </div>

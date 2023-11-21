@@ -36,13 +36,13 @@ export default function HintsPreview({ userInput, word }:Props):JSX.Element{
           if(item === wordArray[index]){
             return(
               <div className={styles.correct} key={index}>
-                {item}
+                {item.toUpperCase()}
               </div>
             )
           } else {
             return(
               <div className={styles.incorrect} key={index}>
-                {item}
+                {item.toUpperCase()}
               </div>
             )
           }

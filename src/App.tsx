@@ -95,14 +95,16 @@ function App() {
             </div>
           </div>
           <div className={mobileNav ? "sidenav open" : "sidenav close"}>
+            <div className="sticky-wrapper">
             <div className="sidenav-content">
-              <div className="sidenav-close" onClick={() => setmobileNav(false)}>&#x2715;</div>
-              <SidenavIcon active={activePage == 'words' ? true : false} icon={<Document24Filled />} title={"Practice Words"} setActive={() => changePage('words')} />
-              <SidenavIcon active={activePage == 'phrases' ? true : false} icon={<ChatEmpty24Filled />} title={"Practice Phrases"} setActive={() => changePage('phrases')} />
-              <SidenavIcon active={activePage == 'callsigns' ? true : false} icon={<PersonTag24Filled />} title={"Practice Callsigns"} setActive={() => changePage('callsigns')} />
-              <SidenavIcon active={activePage == 'koch' ? true : false} icon={<Book24Filled />} title={"Koch Method"} setActive={() => changePage('koch')} />
-              <SidenavIcon active={activePage == 'translator' ? true : false} icon={<ArrowClockwise24Filled />} title={"Translator"} setActive={() => changePage('translator')} />
-              <SidenavIcon active={activePage == 'settings' ? true : false} icon={<ContentSettings24Filled />} title={"Settings"} setActive={() => changePage('settings')} />
+                <div className="sidenav-close" onClick={() => setmobileNav(false)}>&#x2715;</div>
+                <SidenavIcon active={activePage == 'words' ? true : false} icon={<Document24Filled />} title={"Practice Words"} setActive={() => changePage('words')} />
+                <SidenavIcon active={activePage == 'phrases' ? true : false} icon={<ChatEmpty24Filled />} title={"Practice Phrases"} setActive={() => changePage('phrases')} />
+                <SidenavIcon active={activePage == 'callsigns' ? true : false} icon={<PersonTag24Filled />} title={"Practice Callsigns"} setActive={() => changePage('callsigns')} />
+                <SidenavIcon active={activePage == 'koch' ? true : false} icon={<Book24Filled />} title={"Koch Method"} setActive={() => changePage('koch')} />
+                <SidenavIcon active={activePage == 'translator' ? true : false} icon={<ArrowClockwise24Filled />} title={"Translator"} setActive={() => changePage('translator')} />
+                <SidenavIcon active={activePage == 'settings' ? true : false} icon={<ContentSettings24Filled />} title={"Settings"} setActive={() => changePage('settings')} />
+              </div>
             </div>
           </div>
           <div className="main">
