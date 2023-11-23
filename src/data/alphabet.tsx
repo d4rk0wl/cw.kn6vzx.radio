@@ -35,7 +35,7 @@ const alphabet = {
   7: "--...",
   8: "---..",
   9: "----.",
-  10: "-----",
+  0: "-----",
 }
 
 export default alphabet

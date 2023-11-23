@@ -3,10 +3,24 @@ import {
   Switch,
   Slider,
   Label,
-  Button
+  Button,
+  Tooltip,
+  InfoLabel,
+  makeStyles,
 } from '@fluentui/react-components';
+
 import { Save24Regular } from '@fluentui/react-icons';
 import '../styles/settings.scss'
+
+const useStyles = makeStyles({
+  infoLabel: {
+    display: 'flex',
+    alignContent: 'center'
+  },
+  switch: {
+    marginRight: '-10px'
+  }
+})
 
 interface Props {
   setdarkMode: () => void,
@@ -14,17 +28,21 @@ interface Props {
 }
 
 export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
+  const styles = useStyles()
   const [wpm, setWpm] = useState<number>(20)
   const [farnsworth, setFarnsworth] = useState<number>(0)
   const [tone, setTone] = useState<number>(600)
   const [ hints, setHints ] = useState<boolean>(false)
+  const [ autoplay, setAutoPlay ] = useState<boolean>(false)
+  const [ cheatMode, setCheatMode ] = useState<boolean>(false) 
 
   useEffect(() => {
     setWpm(Number(window.localStorage.getItem('wpm')))
     setFarnsworth(Number(window.localStorage.getItem('farnsworth')) * 2)
     setTone(Number(window.localStorage.getItem('tone')))
     setHints((window.localStorage.getItem('hints')) == 'true') //Janky code to convert string to boolean
-    console.log('here')
+    setAutoPlay((window.localStorage.getItem('auto_play')) == 'true')
+    setCheatMode((window.localStorage.getItem('cheat_mode')) == 'true')
   }, [])
 
   const saveSettings = ():void => {
@@ -32,20 +50,44 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
     window.localStorage.setItem('farnsworth', String(farnsworth / 2))
     window.localStorage.setItem('tone', String(tone))
     window.localStorage.setItem('hints', String(hints))
+    window.localStorage.setItem('auto_play', String(autoplay))
+    window.localStorage.setItem('cheat_mode', String(cheatMode))
   }
   return(
     <>
       <div className="settings">
         <div className='settings-content'>
-          <Label htmlFor='wpm'>Words per Minute: {wpm}wpm</Label>
+          <Tooltip positioning={'before'} content="Adjust the Words Per Minute (WPM) of the morse code being played. This is the speed in which characters are transmitted" relationship='description'>
+            <Label htmlFor='wpm'>Words per Minute: {wpm}wpm</Label>
+          </Tooltip>
           <Slider value={wpm} step={5} min={15} max={40} size={'medium'} onChange={(e) => setWpm(parseInt(e.target.value))} />
-          <Label htmlFor='farnsworth'>Farnsworth Delay: {farnsworth / 2}s</Label>
+          <Tooltip positioning={'before'} content="Adjust the Farnsworth delay between characters. This delay time is interjected between each of the letters or numbers of a transmission" relationship='description'>
+            <Label htmlFor='farnsworth'>Farnsworth Delay: {farnsworth / 2}s</Label>
+          </Tooltip>
           <Slider value={farnsworth} min={0} max={20} size={'medium'} onChange={(e) => setFarnsworth(parseInt(e.target.value))} />
-          <Label htmlFor='tone'>Tone: {tone}hz</Label>
+          <Tooltip positioning={'before'} content="Adjust the tone (Hz) in which the oscilliator plays. Some people prefer a lower or higher sine wave tone." relationship='description'>
+            <Label htmlFor='tone'>Tone: {tone}hz</Label>
+          </Tooltip>
           <Slider value={tone} step={50} min={400} max={1000} size={'medium'} onChange={(e) => setTone(parseInt(e.target.value))} />
-          <div className="switch-row">
-            <Switch label={"Dark Mode"} onChange={() => setdarkMode()} checked={darkMode} />
-            <Switch label={"Hints"} onChange={() => setHints(!hints)} checked={hints} />
+          <div className="switch-grid">
+            <div className="settings-grid-box">
+              <Switch className={styles.switch} label={`Dark Theme`} onChange={() => setdarkMode()} checked={darkMode} />
+            </div>
+            <div className="settings-grid-box">
+              <InfoLabel className={styles.infoLabel} info={"When practicing words/callsigns/phrases, automatically play the next word without needing to lift your hands from the keyboard"}>
+                <Switch className={styles.switch} label={"Auto Play"} onChange={() => setAutoPlay(!autoplay)} checked={autoplay} />
+              </InfoLabel>
+            </div>
+            <div className="settings-grid-box">
+              <InfoLabel className={styles.infoLabel} info={"Shows a helpful morse code chart along with displaying the incorrect letters"}>
+                <Switch className={styles.switch} label={"Hints"} onChange={() => setHints(!hints)} checked={hints} />
+              </InfoLabel>
+            </div>
+            <div className="settings-grid-box">
+              <InfoLabel className={styles.infoLabel} info={"Tisk tisk tisk... This enables the solution to be displayed in the developer console 🤦"}>
+                <Switch className={styles.switch} label={"Cheat Mode"} onChange={() => setCheatMode(!cheatMode)} checked={cheatMode} />
+              </InfoLabel>
+            </div>
           </div>
           <Button className='.save' appearance='primary' icon={<Save24Regular />} onClick={() => saveSettings()}>Save Settings</Button>
         </div>
@@ -61,5 +103,7 @@ export function setDefault():void{
     window.localStorage.setItem('tone', '600')
     window.localStorage.setItem('hints', 'true')
     window.localStorage.setItem('saved_settings', 'true')
+    window.localStorage.setItem('auto_play', 'false')
+    window.localStorage.setItem('cheat_mode', 'false')
   }
 }

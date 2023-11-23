@@ -1,5 +1,3 @@
-@import './variables.scss';
-
 .sidenav-icon {
   width: 80%;
   display: flex;
@@ -10,11 +8,11 @@
   transition: background-color 0.3s linear;
   border-radius: 50px;
   &.active {
-    background-color: $primary-color;
+    background-color: #479EF5;
   }
   &:hover {
     cursor: pointer;
-    background-color: $primary-color;
+    background-color: #479EF5;
   }
 }
 

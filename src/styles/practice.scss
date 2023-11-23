@@ -24,4 +24,18 @@
     padding-top: 35px;
     gap: 1em;
   }
+  &.center {
+    text-align: center;
+    align-items: center;
+  }
+  &.cs-format {
+    height: 50px;
+    justify-content: start;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .grid-box {
+    grid-column: span 2;
+  } 
 }

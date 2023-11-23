@@ -43,9 +43,9 @@ export default function History({historyArray}:Props):JSX.Element{
           <div className={styles.historyTable}>
             {historyArray.map((item) => {
                 return(
-                  <div className={styles.historyItem} key={item.historicalWord}>
+                  <div className={styles.historyItem} key={`${item.historicalWord}${Math.random() * 10}`}>
                     <Card onClick={() => Oscillator(item.historicalWord)}>
-                      <span>{item.historicalWord}</span><span>{item.code.join('')}</span>
+                      <span>{item.historicalWord.toUpperCase()}</span><span>{item.code.join('')}</span>
                     </Card>
                   </div>
                 )

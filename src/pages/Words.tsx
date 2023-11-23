@@ -1,11 +1,10 @@
+import { useState } from 'react';
 import {
   Label,
   Slider,
   Dropdown,
   Option,
   Button,
-  Input,
-  makeStyles,
   Toaster,
   Toast,
   ToastTitle,
@@ -14,34 +13,22 @@ import {
   useId
 } from '@fluentui/react-components';
 import useSound from 'use-sound';
-import { useState } from 'react';
+import fail from '../assets/fail.wav';
+import success from '../assets/success.wav';
+
 import HintsTable from '../components/HintsTable';
 import HintsPreview from '../components/HintsPreview';
 import History from '../components/History';
 import { Oscillator, GenerateMorseSync } from '../utilities/Oscillator';
+import MainInput from '../components/MainInput';
+
 import '../styles/practice.scss';
-import fail from '../assets/fail.wav';
-import success from '../assets/success.wav';
 
-const useStyles = makeStyles({
-  submit: {
-    maxWidth: '100px;',
-    marginLeft: 'calc(50% - 50px);'
-  },
-  input: {
-    fontSize: '2em;',
-    paddingTop: '10px;',
-    paddingBottom: '10px;',
-    textAlign: 'center' //Why doesn't this work?
-  }
-})
-
-interface toastType {
+type toastType =  {
   type: "success" | "error" | "warning",
   title: string,
   message: string
 }
-
 
 export default function Words(){
   const toasterId = useId('toaster')
@@ -57,7 +44,6 @@ export default function Words(){
 
   const [failEffect] = useSound(fail)
   const [successEffect] = useSound(success)
-  const styles = useStyles();
 
   const notify = ({ type, title, message}:toastType):void => {
     dispatchToast(
@@ -74,11 +60,12 @@ export default function Words(){
     fetch(`https://random-word-api.herokuapp.com/word?length=${wordLength}&lang=${language}`)
     .then(res => res.json())
     .then(data => {
-      setuserInput('')
-      console.log(data[0])
       setWord(data[0])
       Oscillator(data[0])
       setDisabled(false)
+      if(window.localStorage.getItem('cheat_mode') == 'true'){
+        console.warn(`Cheat Mode Enabled - ${data[0]}`)
+      }
     })
   }
 
@@ -87,12 +74,25 @@ export default function Words(){
       successEffect();
       notify({type: "success", title: "Correct", message: "You have guessed the word correctly!"});
       setHistory(history => [...history, {historicalWord: word, code: GenerateMorseSync(word)}])
-      sethintWord('')
+      clearAll()
+      if(window.localStorage.getItem('auto_play') == 'true'){
+        setTimeout(() => {
+          getWord()
+        }, 1000)
+      }
     } else {
       failEffect();
       sethintWord(userInput)
       notify({type: "error", title: "Incorrect!", message: "You have not guessed the word correctly"});
+      setTimeout(() => {
+        Oscillator(word)
+      }, 800)
     }
+  }
+
+  const clearAll = () => {
+    sethintWord('')
+    setuserInput('')
   }
 
   const changeLanguage = (event: string):void => {
@@ -117,7 +117,7 @@ export default function Words(){
           <Label htmlFor={'wordLength'}>Word Length:&nbsp;{wordLength}</Label>
           <Slider id={'wordLength'} min={2} max={8} defaultValue={4} disabled={disabled} onChange={(e) => setwordLength(Number(e.target.value))} />
           <Label htmlFor={'language'}>Language:</Label>
-          <Dropdown id={'language'} placeholder='Select Language' disabled={disabled} defaultSelectedOptions={['English']} onOptionSelect={(e) => changeLanguage(e.target.textContent)}>
+          <Dropdown id={'language'} disabled={disabled} defaultValue={'English'} defaultSelectedOptions={['English']} onOptionSelect={(e) => changeLanguage(e.target.textContent)}>
             <Option>English</Option>
             <Option>Italian</Option>
             <Option>German</Option>
@@ -129,8 +129,7 @@ export default function Words(){
         </div>
         <div className='grid-box grid-col-span-2 input'>
           {window.localStorage.getItem('hints') == 'true' ? <HintsPreview userInput={hintWord} word={word} /> : <></>}
-          <Input className={styles.input} size={'large'} id='userInput' placeholder='Enter Word Here' onChange={(e) => setuserInput(e.target.value)} />
-          <Button className={styles.submit} appearance='primary' onClick={() => checkWord()}>Submit</Button>
+          <MainInput placeholder='Enter Word' change={(e) => setuserInput(e.target.value)} submit={() => checkWord()} value={userInput} />
         </div>
         <div className="grid-box grid-col-span-2">
           <History historyArray={history}/>

@@ -3,8 +3,13 @@ import {
   FluentProvider,
   webDarkTheme,
   webLightTheme,
-  useThemeClassName
+  useThemeClassName,
+  makeStyles,
+  Link,
+  shorthands,
+  Tooltip
 } from '@fluentui/react-components'
+
 import { Rss24Regular, 
   QuestionCircle24Regular,
   Document24Filled,
@@ -18,10 +23,13 @@ import { Rss24Regular,
 
 import './styles/app.scss'
 import LogoTest from './components/Logo';
+import Help from './components/Help';
 
 import SidenavIcon from './components/Sidenavicon';
 import Default from './pages/Default';
 import Words from './pages/Words';
+import Callsigns from './pages/Callsigns';
+import Phrases from './pages/Phrases';
 import Translator from './pages/Translator';
 import { Settings, setDefault} from './pages/Settings';
 
@@ -37,11 +45,23 @@ function ApplyToBody() {
   return null;
 }
 
+const useStyles = makeStyles({
+  topIcons: {
+    paddingRight: '10px',
+    cursor: 'pointer'
+  },
+  iconLink: {
+    color: 'inherit',
+    ...shorthands.textDecoration('underline')
+  }
+})
+
 function App() {
-  const [ darkMode, setdarkMode ] = useState<boolean>(false)
+  const [ darkMode, setdarkMode ] = useState<boolean>(true)
   const [ activePage, setactivePage ] = useState<string>('')
-  const [ mobileNav, setmobileNav ] = useState<boolean>(true)
+  const [ mobileNav, setmobileNav ] = useState<boolean>(false)
   const [ helpModal, sethelpModal ] = useState<boolean>(false)
+  const styles = useStyles();
 
   useEffect(() => {
     console.log('initial render')
@@ -53,9 +73,9 @@ function App() {
       case 'words':
         return(<Words />)
       case 'phrases':
-        return(<h1>Phrases</h1>)
+        return(<Phrases />)
       case 'callsigns':
-        return(<h1>Callsigns</h1>)
+        return(<Callsigns />)
       case 'koch':
         return(<h1>Koch</h1>)
       case 'translator':
@@ -76,7 +96,7 @@ function App() {
     <>
       <FluentProvider theme={darkMode ? webDarkTheme : webLightTheme}>
         <ApplyToBody />
-        <div className="app">
+        <div className="app modal">
           <div className="topnav">
             <div className="topnav-content">
               <div className="topnav-title">
@@ -89,8 +109,12 @@ function App() {
                 </span>
               </div>
               <div className="topnav-links">
-                <QuestionCircle24Regular />
-                <Rss24Regular onClick={() => sethelpModal(true)} />
+                <Tooltip content={"Show help panel"} relationship='description'>
+                  <QuestionCircle24Regular className={styles.topIcons} onClick={() => sethelpModal(true)} />
+                </Tooltip>
+                <Tooltip content={"Visit the blog"} relationship='description'>
+                  <Link className={styles.iconLink} target="_blank" href="https://kn6vzx.radio"><Rss24Regular className={styles.topIcons} /></Link>
+                </Tooltip>
               </div>
             </div>
           </div>
@@ -111,7 +135,16 @@ function App() {
             {renderPage(activePage)}
           </div>
         </div>
-        {helpModal ? <div className='help-modal'>Help Modal</div> : <></>}
+        <div className="modal-wrapper" style={helpModal ? {display: 'block'} : {display: 'none'}}>
+          <div className={darkMode ? "help-modal dark" : "help-modal light"}>
+            <div className="modal-close" onClick={() => sethelpModal(false)}>
+              &#x2715;
+            </div>
+            <div className="modal-content">
+              <Help />
+            </div>
+          </div>
+        </div>
       </FluentProvider>
     </>
   )

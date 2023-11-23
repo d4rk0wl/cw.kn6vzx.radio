@@ -3,7 +3,7 @@ import alphabet from '../data/alphabet.tsx'
 export function GenerateMorseSync(word:string){
   const morse:string[] = []
   word.split("").forEach((letter:string) => {
-    morse.push(alphabet[letter.toLocaleLowerCase()] + " ")
+    morse.push(alphabet[letter.toLocaleLowerCase() as keyof object] + " ")
   })
   return morse
 }
@@ -11,7 +11,7 @@ export function GenerateMorseSync(word:string){
 async function GenerateMorse(word:string){
   const morse:string[] = []
   word.split("").forEach((letter:string) => {
-    morse.push(alphabet[letter.toLowerCase()])
+    morse.push(alphabet[letter.toLowerCase() as keyof object])
     if(letter != " "){
       //Intra-character spacing is three dots. The `,` represents the end of a letter so the oscillator function will evaluate the correct timing
       morse.push(',') 
@@ -48,7 +48,8 @@ async function convertSettings():Promise<number> {
 }
 
 export async function Oscillator(params:string){
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  //const AudioContext = window.AudioContext || window.webkitAudioContext; - Typescript throws error with webkitAudioContext
+  const AudioContext = window.AudioContext
   const ctx = new AudioContext();
   const dot = await convertSettings();
   let t = ctx.currentTime;
