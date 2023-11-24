@@ -11,7 +11,7 @@ phases:
   build:
     commands:
       - echo Started Build Phase
-      - npm run build
+      - npm run build --verbose
   post_build:
     commands:
       - echo Started Post-Build Phase
