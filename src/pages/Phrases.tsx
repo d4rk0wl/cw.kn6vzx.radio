@@ -70,7 +70,7 @@ export default function Phrases(){
           <Button appearance='primary' className={styles.mainButton} onClick={() => generatePhrase()}>New Phrase</Button>
         </div>
         <div className="grid-box center">
-          <Button appearance='secondary' className={styles.mainButton}>Repeat Phrase</Button>
+          <Button appearance='secondary' className={styles.mainButton} onClick={() => Oscillator(phrase.code)}>Repeat Phrase</Button>
         </div>
         {window.localStorage.getItem('hints') == 'true' ? <>
           <div className="grid-box center cs-format">

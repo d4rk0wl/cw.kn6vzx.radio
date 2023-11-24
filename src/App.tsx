@@ -30,6 +30,7 @@ import Default from './pages/Default';
 import Words from './pages/Words';
 import Callsigns from './pages/Callsigns';
 import Phrases from './pages/Phrases';
+import Koch from './pages/Koch';
 import Translator from './pages/Translator';
 import { Settings, setDefault} from './pages/Settings';
 
@@ -77,7 +78,7 @@ function App() {
       case 'callsigns':
         return(<Callsigns />)
       case 'koch':
-        return(<h1>Koch</h1>)
+        return(<Koch />)
       case 'translator':
         return(<Translator />)
       case 'settings':
@@ -120,8 +121,8 @@ function App() {
           </div>
           <div className={mobileNav ? "sidenav open" : "sidenav close"}>
             <div className="sticky-wrapper">
+            <div className="sidenav-close" onClick={() => setmobileNav(false)}>&#x2715;</div>
             <div className="sidenav-content">
-                <div className="sidenav-close" onClick={() => setmobileNav(false)}>&#x2715;</div>
                 <SidenavIcon active={activePage == 'words' ? true : false} icon={<Document24Filled />} title={"Practice Words"} setActive={() => changePage('words')} />
                 <SidenavIcon active={activePage == 'phrases' ? true : false} icon={<ChatEmpty24Filled />} title={"Practice Phrases"} setActive={() => changePage('phrases')} />
                 <SidenavIcon active={activePage == 'callsigns' ? true : false} icon={<PersonTag24Filled />} title={"Practice Callsigns"} setActive={() => changePage('callsigns')} />
