@@ -10,4 +10,9 @@ phases:
       - npm install --omit=dev
   build:
     commands:
+      - echo Started Build Phase
       - npm run build
+  post_build:
+    commands:
+      - echo Started Post-Build Phase
+      - aws s3 sync dist s3://cw.kn6vzx.radio/ --debug
