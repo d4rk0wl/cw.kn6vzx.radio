@@ -5,7 +5,8 @@ import {
   makeStyles
 } from '@fluentui/react-components'
 import phrases from '../data/phrases'
-import useSound from 'use-sound'
+//@ts-expect-error Incorrect exports file on NPM package
+import useSound from 'use-sound' 
 import fail from '../assets/fail.wav'
 import success from '../assets/success.wav'
 import { Oscillator, GenerateMorseSync } from '../utilities/Oscillator'

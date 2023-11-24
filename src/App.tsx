@@ -65,7 +65,6 @@ function App() {
   const styles = useStyles();
 
   useEffect(() => {
-    console.log('initial render')
     setDefault()
   }, [])
 
@@ -104,8 +103,8 @@ function App() {
                 <div className="menu">
                   <GridDots28Regular onClick={() => setmobileNav(true)} />
                 </div>
-                <h1><i>KN6VZX</i> CW Practice</h1>
-                <span className='logo'>
+                <h1 style={{ cursor: 'pointer'}} onClick={() => changePage('')}><i>KN6VZX</i> CW Practice</h1>
+                <span style={{ cursor: 'pointer '}} onClick={() => changePage('')} className='logo'>
                   <LogoTest darkMode={darkMode} />
                 </span>
               </div>

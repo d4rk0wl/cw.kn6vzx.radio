@@ -12,6 +12,7 @@ import {
   useToastController,
   useId
 } from '@fluentui/react-components';
+//@ts-expect-error Incorrect exports file on NPM package
 import useSound from 'use-sound';
 import fail from '../assets/fail.wav';
 import success from '../assets/success.wav';
@@ -117,6 +118,7 @@ export default function Words(){
           <Label htmlFor={'wordLength'}>Word Length:&nbsp;{wordLength}</Label>
           <Slider id={'wordLength'} min={2} max={8} defaultValue={4} disabled={disabled} onChange={(e) => setwordLength(Number(e.target.value))} />
           <Label htmlFor={'language'}>Language:</Label>
+          {/*@ts-expect-error Poor documentation FluentUI 2 frame word does not explain error*/}
           <Dropdown id={'language'} disabled={disabled} defaultValue={'English'} defaultSelectedOptions={['English']} onOptionSelect={(e) => changeLanguage(e.target.textContent)}>
             <Option>English</Option>
             <Option>Italian</Option>

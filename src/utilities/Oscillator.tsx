@@ -3,7 +3,10 @@ import alphabet from '../data/alphabet.tsx'
 export function GenerateMorseSync(word:string){
   const morse:string[] = []
   word.split("").forEach((letter:string) => {
-    morse.push(alphabet[letter.toLocaleLowerCase() as keyof object] + " ")
+    const letterSelection = alphabet[letter.toLocaleLowerCase() as keyof object]
+    if(letterSelection != undefined){
+      morse.push(letterSelection)
+    }
   })
   return morse
 }
@@ -11,10 +14,12 @@ export function GenerateMorseSync(word:string){
 async function GenerateMorse(word:string){
   const morse:string[] = []
   word.split("").forEach((letter:string) => {
-    morse.push(alphabet[letter.toLowerCase() as keyof object])
-    if(letter != " "){
-      //Intra-character spacing is three dots. The `,` represents the end of a letter so the oscillator function will evaluate the correct timing
-      morse.push(',') 
+    const letterSelection = alphabet[letter.toLowerCase() as keyof object]
+    if (letterSelection != undefined){ //Checking for letters not in morse alphabet
+      morse.push(letterSelection)
+      if(letter != " "){
+        morse.push(',') //Intra character spacing needed between letters
+      }
     }
   })
   return morse

@@ -13,7 +13,9 @@ import {
   ToastBody,
   useToastController,
   useId,
-  Link
+  Body2,
+  shorthands,
+  Tooltip
 } from '@fluentui/react-components'
 import kochlevels from '../data/kochlevels'
 import { Oscillator } from '../utilities/Oscillator'
@@ -27,11 +29,22 @@ const useStyles = makeStyles({
   dropdownSpacing: {
     marginBottom: '15px'
   },
-  startButton: {
-    width: '100%'
+  solution: {
+    textAlign: 'center',
   },
-  link: {
-    paddingTop: '20px'
+  solutionHeading: {
+    ...shorthands.borderBottom('1px', 'solid')
+  },
+  wideSpacing: {
+    letterSpacing: '2px'
+  },
+  correct: {
+    backgroundColor: 'green',
+    ...shorthands.margin('2px')
+  },
+  incorrect: {
+    backgroundColor: 'red',
+    ...shorthands.margin('2px')
   }
 })
 
@@ -48,6 +61,7 @@ export default function Koch(){
   const [level, setLevel] = useState<number>()
   const [charCount, setCharCount ] = useState<number>()
   const [disabled, setDisabled] = useState<boolean>(false)
+  const [ solution, setSolution ] = useState<boolean>(false)
   const [generated, setGenerated] = useState<string>('')
   const styles = useStyles()
 
@@ -66,8 +80,7 @@ export default function Koch(){
       notify({title: "Error", message: 'Please select both level and character count', type: 'error'})
       return
     }
-    // setDisabled(true)
-
+    setDisabled(true)
     const tempArray = []
     let lastChar = ''
     for(let i = 0; i < charCount; i++){
@@ -75,7 +88,6 @@ export default function Koch(){
       if(selection == " " && i == 0){ //Preventing first character from being a space
         i -= 1
       } else if(selection == " " && lastChar == " ") { //Preventing duplicate space entries
-        console.log('Duplicate Spaces')
         i -= 1
       } else {
         lastChar = selection
@@ -84,16 +96,19 @@ export default function Koch(){
     }
     
     setGenerated(tempArray.join(''))
-    console.log(tempArray)
-    // Oscillator(tempArray.join(''))
+    Oscillator(tempArray.join(''))
   }
 
   const checkSolution = () => {
-    console.log(`User Input - ${userInput}`)
-    console.log(`Game generated - ${generated}`)
+    setSolution(true)
   }
 
-  console.log(level)
+  const reset = () => {
+    setUserInput('')
+    setGenerated('')
+    setSolution(false)
+    setDisabled(false)
+  }
 
   return(
     <>
@@ -101,14 +116,19 @@ export default function Koch(){
       <div className="content-wrapper">
         <div className="grid-box">
           <Label id="level">Select Level:</Label>
+          {/*@ts-expect-error Poor documentation FluentUI 2 frame word does not explain error*/}
           <Dropdown disabled={disabled} className={styles.dropdownSpacing} id="level" placeholder='Select Level...' onOptionSelect={(e) => setLevel(e.target.textContent)}>
-            {Object.keys(kochlevels).map((item) => {
+            {Object.keys(kochlevels).map((item, index) => {
+              console.log(item)
               return(
-                <Option key={`${item}`}>{item}</Option>
+                <Tooltip content={<span className={styles.wideSpacing}>{kochlevels[index].characters.join('').toUpperCase()}</span>} relationship='description'>
+                  <Option key={`${item}`}>{item}</Option>
+                </Tooltip>
               )
             })}
           </Dropdown>
           <Label id="time">Select Practice Count:</Label>
+          {/*@ts-expect-error Poor documentation FluentUI 2 frame word does not explain error*/}
           <Dropdown disabled={disabled} className={styles.dropdownSpacing} id="time" placeholder='Select Time...' onOptionSelect={(e) => setCharCount(e.target.textContent)}>
             <Option text='20 Characters'>20</Option>
             <Option text='30 Characters'>30</Option>
@@ -121,16 +141,44 @@ export default function Koch(){
             <Option text='100 Characters'>100</Option>
           </Dropdown>
         </div>
-        <div className="grid-box center">
-          <Button className={styles.startButton} disabled={disabled} appearance='primary' onClick={() => generateGame()}>Start Practice</Button>
-          <Link className={styles.link} href='https://google.com' target='_blank'>View Levels Chart</Link>
+        <div className="grid-box">
+          <Button disabled={disabled} appearance='primary' onClick={() => generateGame()}>Start Practice</Button>
+          <Button disabled={!disabled} appearance='secondary' onClick={() => reset()}>Reset Game</Button>
         </div>
         <div className="grid-box grid-col-span-2">
           <Field label="Submit Answers">
-            <Textarea className={styles.textArea} onChange={(e) => setUserInput(e.target.value)} value={userInput} />
+            <Textarea disabled={solution} className={styles.textArea} onChange={(e) => setUserInput(e.target.value)} value={userInput} />
           </Field>
-          <Button disabled={false} appearance='primary' onClick={() => checkSolution()}>Submit Answers</Button>
+          <Button disabled={!disabled} appearance='primary' onClick={() => checkSolution()}>Submit Answers</Button>
         </div>
+        {solution ? <>
+          <div className="grid-box">
+            <div className={styles.solution}>
+              <h2 className={styles.solutionHeading}>Answer:</h2>
+              <Body2 className={styles.wideSpacing}>
+                {generated.toUpperCase()}
+              </Body2>
+            </div>
+          </div>
+          <div className="grid-box">
+            <div className={styles.solution}>
+              <h2 className={styles.solutionHeading}>Player Input:</h2>
+              <Body2 className={styles.wideSpacing}>
+                {userInput.split('').map((item, index) => {
+                  if(item.toLowerCase() === generated.split('')[index]) {
+                    return(
+                      <span className={styles.correct} key={index}>{item.toUpperCase()}</span>
+                    )
+                  } else {
+                    return(
+                      <span className={styles.incorrect} key={index}>{item.toUpperCase()}</span>
+                    )
+                  }
+                })}
+              </Body2>
+            </div>
+          </div>
+        </> : <></>}
       </div>
     </>
   )

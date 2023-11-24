@@ -1,0 +1,26 @@
+.wrapper {
+  margin: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.wrapper h2 {
+  text-align: center;
+}
+
+.warning {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid;
+  border-radius: 10px;
+  max-width: 800px;
+  padding: 5px;
+  margin: auto;
+}
+
+.warning-icons {
+  display: flex;
+  align-items: center;
+}

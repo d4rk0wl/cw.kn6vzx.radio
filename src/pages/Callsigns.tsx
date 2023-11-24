@@ -4,6 +4,7 @@ import {
   Label,
   makeStyles
 } from '@fluentui/react-components'
+//@ts-expect-error Incorrect export on NPM package
 import useSound from 'use-sound';
 import fail from '../assets/fail.wav'
 import success from '../assets/success.wav'
