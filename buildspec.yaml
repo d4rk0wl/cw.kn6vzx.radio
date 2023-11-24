@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       - echo Started Pre-Build Phase
-      - npm install --omit=dev
+      - npm install
   build:
     commands:
       - echo Started Build Phase
