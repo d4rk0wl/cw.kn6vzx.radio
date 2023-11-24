@@ -31,9 +31,7 @@ const useStyles = makeStyles({
     width: '100%',
     maxWidth: '600px',
     height: 'auto',
-    marginLeft: 'calc(50% - 300px)',
-    marginTop: '20px',
-    marginBottom: '20px'
+    ...shorthands.margin('20px', 'auto', '20px', 'auto')
   }
 })
 
