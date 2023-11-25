@@ -30,6 +30,14 @@ html, body {
   justify-content: space-evenly;
 }
 
+.topnav-title h1 {
+  line-height: 28px;
+}
+
+.topnav-links {
+  padding-right: 10px;
+}
+
 .sidenav {
   display: block;
   position: absolute;
@@ -189,5 +197,11 @@ html, body {
 @media only screen and (max-width: 430px) {
   .logo {
     display: none;
+  }
+}
+
+@media only screen and (max-width: 460px) {
+  .topnav-links {
+    padding: 0;
   }
 }

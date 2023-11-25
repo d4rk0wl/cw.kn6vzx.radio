@@ -53,8 +53,7 @@ async function convertSettings():Promise<number> {
 }
 
 export async function Oscillator(params:string){
-  //@ts-expect-error For some reason TypeScript does not like webkit stuff
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const AudioContext = window.AudioContext
   const ctx = new AudioContext();
   const dot = await convertSettings();
   let t = ctx.currentTime;
