@@ -53,7 +53,6 @@ async function convertSettings():Promise<number> {
 }
 
 export async function Oscillator(params:string){
-  //const AudioContext = window.AudioContext || window.webkitAudioContext; - Typescript throws error with webkitAudioContext
   const AudioContext = window.AudioContext
   const ctx = new AudioContext();
   const dot = await convertSettings();

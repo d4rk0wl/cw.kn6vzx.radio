@@ -103,7 +103,7 @@ export function setDefault():void{
     window.localStorage.setItem('tone', '600')
     window.localStorage.setItem('hints', 'true')
     window.localStorage.setItem('saved_settings', 'true')
-    window.localStorage.setItem('auto_play', 'false')
+    window.localStorage.setItem('auto_play', 'true')
     window.localStorage.setItem('cheat_mode', 'false')
   }
 }

@@ -48,7 +48,6 @@ function ApplyToBody() {
 
 const useStyles = makeStyles({
   topIcons: {
-    paddingRight: '10px',
     cursor: 'pointer'
   },
   iconLink: {
@@ -58,7 +57,7 @@ const useStyles = makeStyles({
 })
 
 function App() {
-  const [ darkMode, setdarkMode ] = useState<boolean>(true)
+  const [ darkMode, setdarkMode ] = useState<boolean>(false)
   const [ activePage, setactivePage ] = useState<string>('')
   const [ mobileNav, setmobileNav ] = useState<boolean>(false)
   const [ helpModal, sethelpModal ] = useState<boolean>(false)
