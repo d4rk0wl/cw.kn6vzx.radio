@@ -71,7 +71,7 @@ export default function Words(){
   }
 
   const checkWord = ():void => {
-    if(userInput?.toLocaleLowerCase() == word && userInput.length > 0) {
+    if(userInput?.toLowerCase() == word && userInput.length > 0) {
       successEffect();
       notify({type: "success", title: "Correct", message: "You have guessed the word correctly!"});
       setHistory(history => [...history, {historicalWord: word, code: GenerateMorseSync(word)}])
