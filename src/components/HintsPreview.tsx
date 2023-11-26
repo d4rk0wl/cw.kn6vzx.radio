@@ -33,7 +33,7 @@ export default function HintsPreview({ userInput, word }:Props):JSX.Element{
     <>
       <div className={styles.wrapper}>
         {inputArray.map((item, index) => {
-          if(item === wordArray[index]){
+          if(item.toUpperCase() === wordArray[index].toUpperCase()){
             return(
               <div className={styles.correct} key={index}>
                 {item.toUpperCase()}
