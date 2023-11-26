@@ -53,7 +53,7 @@ export default function Help():JSX.Element {
           <li><Body2 underline>Translator:</Body2>&nbsp;&nbsp;<Body1>A simple translator which can be used for converting your given phrase to morse code.</Body1></li>
         </ul>
         <Subtitle1 className={styles.bodyTitle}>Getting Started:</Subtitle1>
-        <Body1>To get started, simply select a training mode from the left-hand navigation bar. Prior to proceeding with a practice session, it may be wise to confirm all your settings beforehand. Inside the settings you have multiple options to configure the speed (WPM) of characters, tone settings and Farnsworth delay. Additional settings include application layout and various modes of assistance. Be advised, f you visit the settings later, your practice history for the given mode will be erased.</Body1>
+        <Body1>To get started, simply select a training mode from the left-hand navigation bar. Prior to proceeding with a practice session, it may be wise to confirm all your settings beforehand. Inside the settings you have multiple options to configure the speed (WPM) of characters, tone settings and Farnsworth delay. Additional settings include application layout and various modes of assistance. Be advised, if you visit the settings later, your practice history for the given mode will be erased.</Body1>
         <Subtitle1 className={styles.bodyTitle}>Features:</Subtitle1>
         <Body1>The aim was to give a complete feature set while allowing users to focus more on learning without needing to work to navigate the application.</Body1>
         <ul>
