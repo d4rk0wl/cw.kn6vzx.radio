@@ -56,6 +56,7 @@ export async function Oscillator(params:string){
   const AudioContext = window.AudioContext
   const ctx = new AudioContext();
   const dot = await convertSettings();
+  const vol = Number(window.localStorage.getItem('volume'))
   let t = ctx.currentTime;
   const farnsworth = Number(window.localStorage.getItem('farnsworth'))
 
@@ -74,13 +75,13 @@ export async function Oscillator(params:string){
     code.forEach((symbol) => {
       switch(symbol){
         case ".":
-          gainNode.gain.setValueAtTime(1, t);
+          gainNode.gain.setValueAtTime(vol, t);
           t += dot;
           gainNode.gain.setValueAtTime(0, t);
           t += dot;
           break;
         case "-":
-          gainNode.gain.setValueAtTime(1, t);
+          gainNode.gain.setValueAtTime(vol, t);
           t += 3 * dot;
           gainNode.gain.setValueAtTime(0, t);
           t += dot;

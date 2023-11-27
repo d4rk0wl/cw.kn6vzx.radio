@@ -119,11 +119,12 @@ export default function Koch(){
           {/*@ts-expect-error Poor documentation FluentUI 2 frame word does not explain error*/}
           <Dropdown disabled={disabled} className={styles.dropdownSpacing} id="level" placeholder='Select Level...' onOptionSelect={(e) => setLevel(e.target.textContent)}>
             {Object.keys(kochlevels).map((item, index) => {
-              console.log(item)
               return(
-                <Tooltip content={<span className={styles.wideSpacing}>{kochlevels[index].characters.join('').toUpperCase()}</span>} relationship='description'>
-                  <Option key={`${item}`}>{item}</Option>
-                </Tooltip>
+                <span key={index}>
+                  <Tooltip content={<span className={styles.wideSpacing}>{kochlevels[index].characters.join('').toUpperCase()}</span>} relationship='description'>
+                    <Option key={`${item}`}>{item}</Option>
+                  </Tooltip>
+                </span>
               )
             })}
           </Dropdown>
