@@ -72,8 +72,8 @@ function App() {
                 <div className="menu">
                   <GridDots28Regular onClick={() => setmobileNav(true)} />
                 </div>
-                <h1 style={{ cursor: 'pointer'}}><i>KN6VZX</i> CW Practice</h1>
-                <span style={{ cursor: 'pointer '}} className='logo'>
+                <h1 style={{ cursor: 'pointer'}} onClick={() => window.location.pathname='/'}><i>KN6VZX</i> CW Practice</h1>
+                <span style={{ cursor: 'pointer '}} className='logo' onClick={() => window.location.pathname="/"}>
                   <LogoTest darkMode={darkMode} />
                 </span>
               </div>
@@ -104,6 +104,7 @@ function App() {
               <Route path="/koch" element={<Koch />} />
               <Route path="/translator" element={<Translator /> } />
               <Route path="/settings" element={<Settings darkMode={darkMode} setdarkMode={() => setdarkMode(!darkMode)}/>} />
+              <Route path="*" element={<Default />} />
             </Routes>
           </div>
         </div>
