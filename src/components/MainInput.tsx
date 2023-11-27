@@ -22,9 +22,10 @@ type Props = {
   placeholder: string,
   value: string,
   change: (input: React.ChangeEvent<HTMLInputElement>) => void,
+  disable: boolean
 }
 
-export default function MainInput({ submit, placeholder, value, change }: Props){
+export default function MainInput({ submit, placeholder, value, change, disable }: Props){
   const styles = useStyles();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -35,8 +36,8 @@ export default function MainInput({ submit, placeholder, value, change }: Props)
 
   return(
     <>
-      <Input className={styles.input} placeholder={placeholder} value={value} onChange={(e) => change(e)} onKeyDown={(e) => handleKeyDown(e)} />
-      <Button className={styles.submit} appearance='primary' onClick={() => submit()}>Submit</Button>
+      <Input disabled={disable} className={styles.input} placeholder={placeholder} value={value} onChange={(e) => change(e)} onKeyDown={(e) => handleKeyDown(e)} />
+      <Button disabled={disable} className={styles.submit} appearance='primary' onClick={() => submit()}>Submit</Button>
     </>
   )
 }

@@ -71,7 +71,7 @@ export default function Words(){
   }
 
   const checkWord = ():void => {
-    if(userInput?.toLowerCase() == word && userInput.length > 0) {
+    if(userInput.toLowerCase() == word && userInput.length > 0) {
       successEffect();
       notify({type: "success", title: "Correct", message: "You have guessed the word correctly!"});
       setHistory(history => [...history, {historicalWord: word, code: GenerateMorseSync(word)}])
@@ -131,7 +131,7 @@ export default function Words(){
         </div>
         <div className='grid-box grid-col-span-2 input'>
           {window.localStorage.getItem('hints') == 'true' ? <HintsPreview userInput={hintWord} word={word} /> : <></>}
-          <MainInput placeholder='Enter Word' change={(e) => setuserInput(e.target.value)} submit={() => checkWord()} value={userInput} />
+          <MainInput placeholder='Enter Word' change={(e) => setuserInput(e.target.value)} submit={() => checkWord()} value={userInput} disable={!word ? true : false} />
         </div>
         <div className="grid-box grid-col-span-2">
           <History historyArray={history}/>
