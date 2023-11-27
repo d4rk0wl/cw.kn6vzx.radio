@@ -27,12 +27,14 @@ const useStyles = makeStyles({
 type Props = {
   historyArray: {
     historicalWord: string,
-    code: string[]
+    code: string[],
+    description?: string 
   }[]
 }
 
 export default function History({historyArray}:Props):JSX.Element{
   const styles = useStyles();
+
   if(historyArray.length < 1) {
     return(<></>)
   } else {
@@ -45,7 +47,7 @@ export default function History({historyArray}:Props):JSX.Element{
                 return(
                   <div className={styles.historyItem} key={`${item.historicalWord}${Math.random() * 10}`}>
                     <Card onClick={() => Oscillator(item.historicalWord)}>
-                      <span>{item.historicalWord.toUpperCase()}</span><span>{item.code.join('')}</span>
+                      <span>{item.historicalWord.toUpperCase()}{item.description ? ` / ${item.description}` : <></>}</span><span>{item.code.join('')}</span>
                     </Card>
                   </div>
                 )

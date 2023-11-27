@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 export default function Phrases(){
   const toasterId = useId('toaster')
   const { dispatchToast } = useToastController(toasterId)
-  const [ phrase, setPhrase ] = useState<{code: string, translation: string}>({code: '', translation: ''})
+  const [ phrase, setPhrase ] = useState<{code: string, translation: string, description?: string }>({code: '', translation: '', description: ''})
   const [ userInput, setUserInput] = useState<string>('')
   const [ history, setHistory ] = useState<{historicalWord: string, code: string[]}[]>([])
   const [ hintWord, setHintWord ] = useState<string>('')
@@ -72,7 +72,7 @@ export default function Phrases(){
   const checkPhrase = () => {
     if(phrase.code === userInput.toUpperCase() && userInput.length > 0){
       successEffect()
-      setHistory(history => [...history, {historicalWord: `${phrase.code} / ${phrase.translation}`, code: GenerateMorseSync(phrase.code)}])
+      setHistory(history => [...history, {historicalWord: phrase.code, code: GenerateMorseSync(phrase.code), description: phrase.translation}])
       notify({type: "success", title: "Correct", message: "You have guessed the phrase correctly!"});
       setHintWord('')
       setUserInput('')
