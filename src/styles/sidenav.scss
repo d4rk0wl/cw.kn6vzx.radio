@@ -1,22 +1,23 @@
 .sidenav-icon {
   width: 80%;
-  display: flex;
-  justify-content: left;
   align-items: top;
   padding: 5px 0px 5px 20px;
   margin-bottom: 10px;
   transition: background-color 0.3s linear;
   border-radius: 50px;
+  color: inherit;
+  text-decoration: none;
   &.active {
     background-color: #479EF5;
   }
   &:hover {
-    cursor: pointer;
     background-color: #479EF5;
   }
 }
 
 .sidenav-link {
+  display: flex;
+  align-items: top;
   background: none;
   color: inherit;
   border: none;
