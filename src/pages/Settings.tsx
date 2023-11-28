@@ -7,6 +7,12 @@ import {
   Tooltip,
   InfoLabel,
   makeStyles,
+  Toaster,
+  Toast,
+  ToastTitle,
+  ToastBody,
+  useToastController,
+  useId
 } from '@fluentui/react-components';
 
 import { Save24Regular } from '@fluentui/react-icons';
@@ -27,7 +33,15 @@ interface Props {
   darkMode: boolean
 }
 
+type toastType =  {
+  type: "success" | "error" | "warning",
+  title: string,
+  message: string
+}
+
 export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
+  const toasterId = useId('toaster')
+  const { dispatchToast } = useToastController(toasterId)
   const styles = useStyles()
   const [wpm, setWpm] = useState<number>(20)
   const [farnsworth, setFarnsworth] = useState<number>(0)
@@ -35,7 +49,18 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
   const [ volume, setVolume ] = useState<number>(1)
   const [ hints, setHints ] = useState<boolean>(false)
   const [ autoplay, setAutoPlay ] = useState<boolean>(false)
-  const [ cheatMode, setCheatMode ] = useState<boolean>(false) 
+  const [ cheatMode, setCheatMode ] = useState<boolean>(false)
+  const [ disabled, setDisabled ] = useState<boolean>(false)
+
+  const notify = ({ type, title, message}:toastType):void => {
+    dispatchToast(
+      <Toast>
+        <ToastTitle>{title}</ToastTitle>
+        <ToastBody>{message}</ToastBody>
+      </Toast>,
+      { position: 'top-end', intent: type}
+    )
+  }
 
   useEffect(() => {
     setWpm(Number(window.localStorage.getItem('wpm')))
@@ -55,9 +80,13 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
     window.localStorage.setItem('auto_play', String(autoplay))
     window.localStorage.setItem('cheat_mode', String(cheatMode))
     window.localStorage.setItem('volume', String(volume * 0.01))
+    window.localStorage.setItem('darkMode', String(darkMode))
+    setDisabled(true)
+    notify({ type: 'success', title: 'Settings Saved', message: 'Settings Saved Successfully'})
   }
   return(
     <>
+      <Toaster toasterId={toasterId} />
       <div className="settings">
         <div className='settings-content'>
           <Tooltip positioning={'below'} content="Adjust the Words Per Minute (WPM) of the morse code being played. This is the speed in which characters are transmitted" relationship='description'>
@@ -96,7 +125,7 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
               </InfoLabel>
             </div>
           </div>
-          <Button className='.save' appearance='primary' icon={<Save24Regular />} onClick={() => saveSettings()}>Save Settings</Button>
+          <Button disabled={disabled} className='.save' appearance='primary' icon={<Save24Regular />} onClick={() => saveSettings()}>Save Settings</Button>
         </div>
       </div>
     </>
@@ -112,6 +141,7 @@ export function setDefault():void{
     window.localStorage.setItem('saved_settings', 'true')
     window.localStorage.setItem('auto_play', 'true')
     window.localStorage.setItem('cheat_mode', 'false')
-    window.localStorage.setItem('volume', '0.80')
+    window.localStorage.setItem('volume', '0.9')
+    window.localStorage.setItem('darkMode', 'true')
   }
 }

@@ -59,6 +59,7 @@ function App() {
 
   useEffect(() => {
     setDefault()
+    setdarkMode(window.localStorage.getItem('darkMode') == 'true')
   }, [])
 
   return (
@@ -82,7 +83,7 @@ function App() {
                   <QuestionCircle24Regular className={styles.topIcons} onClick={() => sethelpModal(true)} />
                 </Tooltip>
                 <Tooltip content={"Visit the blog"} relationship='description'>
-                  <Link className={styles.iconLink} target="_blank" href="https://kn6vzx.radio"><Rss24Regular className={styles.topIcons} /></Link>
+                  <Link className={styles.iconLink} target="_blank" href="https://kn6vzx.radio" aria-label='Link to the blog'><Rss24Regular className={styles.topIcons} /></Link>
                 </Tooltip>
               </div>
             </div>
