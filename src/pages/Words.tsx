@@ -5,17 +5,7 @@ import {
   Dropdown,
   Option,
   Button,
-  Toaster,
-  Toast,
-  ToastTitle,
-  ToastBody,
-  useToastController,
-  useId
 } from '@fluentui/react-components';
-//@ts-expect-error Incorrect exports file on NPM package
-import useSound from 'use-sound';
-import fail from '../assets/fail.wav';
-import success from '../assets/success.wav';
 
 import HintsTable from '../components/HintsTable';
 import HintsPreview from '../components/HintsPreview';
@@ -25,15 +15,18 @@ import MainInput from '../components/MainInput';
 
 import '../styles/practice.scss';
 
-type toastType =  {
-  type: "success" | "error" | "warning",
+type ToastParams = {
+  type: "error" | "warning" | "success",
   title: string,
   message: string
 }
 
-export default function Words(){
-  const toasterId = useId('toaster')
-  const { dispatchToast } = useToastController(toasterId)
+type Props = {
+  toast: ({type, title, message}:ToastParams) => void,
+  playSound: (sound: 'success' | 'fail') => void
+}
+
+export default function Words(props: Props){
   const [ wordLength, setwordLength ] = useState<number>(4)
   const [ language, setLanguage ] = useState<string>('en')
   const [ disabled, setDisabled ] = useState<boolean>()
@@ -42,19 +35,6 @@ export default function Words(){
 
   const [ history, setHistory ] = useState<{historicalWord: string, code: string[]}[]>([])
   const [ hintWord, sethintWord ] = useState<string>('')
-
-  const [failEffect] = useSound(fail)
-  const [successEffect] = useSound(success)
-
-  const notify = ({ type, title, message}:toastType):void => {
-    dispatchToast(
-      <Toast>
-        <ToastTitle>{title}</ToastTitle>
-        <ToastBody>{message}</ToastBody>
-      </Toast>,
-      { position: 'top-end', intent: type}
-    )
-  }
 
   const getWord = ():void => {
     setDisabled(true)
@@ -72,8 +52,8 @@ export default function Words(){
 
   const checkWord = ():void => {
     if(userInput.toLowerCase() == word && userInput.length > 0) {
-      successEffect();
-      notify({type: "success", title: "Correct", message: "You have guessed the word correctly!"});
+      props.playSound('success')
+      props.toast({type: "success", title: "Correct", message: "You have guessed the word correctly!"});
       setHistory(history => [...history, {historicalWord: word, code: GenerateMorseSync(word)}])
       clearAll()
       if(window.localStorage.getItem('auto_play') == 'true'){
@@ -82,9 +62,9 @@ export default function Words(){
         }, 1000)
       }
     } else {
-      failEffect();
+      props.playSound('fail')
       sethintWord(userInput)
-      notify({type: "error", title: "Incorrect!", message: "You have not guessed the word correctly"});
+      props.toast({type: "error", title: "Incorrect!", message: "You have not guessed the word correctly"});
       setTimeout(() => {
         Oscillator(word)
       }, 800)
@@ -112,7 +92,6 @@ export default function Words(){
 
   return(
     <>
-      <Toaster toasterId={toasterId} />
       <div className="content-wrapper">
         <div className='grid-box'>
           <Label htmlFor={'wordLength'}>Word Length:&nbsp;{wordLength}</Label>

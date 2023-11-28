@@ -10,13 +10,23 @@ import History from '../components/History'
 
 import '../styles/practice.scss'
 
+type ToastParams = {
+  type: "error" | "success" | "warning",
+  title: string,
+  message: string
+}
 
-export default function Translator(){
+type Props = {
+  toast: ({type, title, message}: ToastParams) => void
+}
+
+export default function Translator({toast}: Props){
   const [ word, setWord ] = useState<string>('')
   const [ history, setHistory ] = useState<{historicalWord: string, code: string[]}[]>([])
 
   const submit = () => {
     if(!word){
+      toast({type: 'error', title: 'Error!', message: 'Please enter some text to translate'})
       return
     }
     Oscillator(word)

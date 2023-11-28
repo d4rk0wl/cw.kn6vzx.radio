@@ -8,7 +8,13 @@ import {
   makeStyles,
   Link,
   shorthands,
-  Tooltip
+  Tooltip,
+  Toaster,
+  Toast,
+  ToastTitle,
+  ToastBody,
+  useToastController,
+  useId
 } from '@fluentui/react-components'
 
 import { Rss24Regular, 
@@ -16,11 +22,16 @@ import { Rss24Regular,
   GridDots28Regular 
 } from '@fluentui/react-icons';
 
+//@ts-expect-error Incorrect exports file on NPM package
+import useSound from 'use-sound';
+import fail from './assets/fail.wav';
+import success from './assets/success.wav';
+
 import './styles/app.scss'
 import LogoTest from './components/Logo';
 import Help from './components/Help';
-
 import Sidenav from './components/Sidenav';
+
 import Default from './pages/Default';
 import Words from './pages/Words';
 import Callsigns from './pages/Callsigns';
@@ -51,7 +62,15 @@ const useStyles = makeStyles({
   }
 })
 
+type toastType =  {
+  type: "error" | "warning" | "success"
+  title: string,
+  message: string
+}
+
 function App() {
+  const toasterId = useId('toaster')
+  const { dispatchToast } = useToastController(toasterId)
   const [ darkMode, setdarkMode ] = useState<boolean>(false)
   const [ mobileNav, setmobileNav ] = useState<boolean>(false)
   const [ helpModal, sethelpModal ] = useState<boolean>(false)
@@ -62,10 +81,31 @@ function App() {
     setdarkMode(window.localStorage.getItem('darkMode') == 'true')
   }, [])
 
+  const notify = ({ type, title, message}:toastType):void => {
+    dispatchToast(
+      <Toast>
+        <ToastTitle>{title}</ToastTitle>
+        <ToastBody>{message}</ToastBody>
+      </Toast>,
+      { position: 'top-end', intent: type}
+    )
+  }
+
+  const [failEffect] = useSound(fail)
+  const [successEffect] = useSound(success)
+  const playSound = (sound: 'success' | 'fail') => {
+    if(sound === 'success'){
+      successEffect();
+    } else {
+      failEffect()
+    }
+  }
+
   return (
     <>
       <FluentProvider theme={darkMode ? webDarkTheme : webLightTheme}>
         <ApplyToBody />
+        <Toaster toasterId={toasterId} />
         <div className="app modal">
           <div className="topnav">
             <div className="topnav-content">
@@ -99,12 +139,12 @@ function App() {
           <div className="main">
             <Routes>
               <Route path="/" element={<Default />} />
-              <Route path="/words" element={<Words />} />
-              <Route path="/phrases" element={<Phrases />} />
-              <Route path="/callsigns" element={<Callsigns />} />
-              <Route path="/koch" element={<Koch />} />
-              <Route path="/translator" element={<Translator /> } />
-              <Route path="/settings" element={<Settings darkMode={darkMode} setdarkMode={() => setdarkMode(!darkMode)}/>} />
+              <Route path="/words" element={<Words toast={notify} playSound={playSound} />} />
+              <Route path="/phrases" element={<Phrases toast={notify} playSound={playSound} />} />
+              <Route path="/callsigns" element={<Callsigns toast={notify} playSound={playSound}/>} />
+              <Route path="/koch" element={<Koch toast={notify} />} />
+              <Route path="/translator" element={<Translator toast={notify} /> } />
+              <Route path="/settings" element={<Settings darkMode={darkMode} setdarkMode={() => setdarkMode(!darkMode)} toast={notify}/>} />
               <Route path="*" element={<Default />} />
             </Routes>
           </div>

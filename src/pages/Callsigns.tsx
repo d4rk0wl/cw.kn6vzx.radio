@@ -2,18 +2,8 @@ import { useState } from 'react'
 import { 
   Button,
   Label,
-  makeStyles,
-  Toaster,
-  Toast,
-  ToastTitle,
-  ToastBody,
-  useToastController,
-  useId
+  makeStyles
 } from '@fluentui/react-components'
-//@ts-expect-error Incorrect export on NPM package
-import useSound from 'use-sound';
-import fail from '../assets/fail.wav'
-import success from '../assets/success.wav'
 import { Oscillator, GenerateMorseSync } from '../utilities/Oscillator';
 import HintsPreview from '../components/HintsPreview';
 import HintsTable from '../components/HintsTable';
@@ -22,10 +12,15 @@ import { callsignFormat, letters, numbers } from '../data/callsignFormat';
 import '../styles/practice.scss'
 import MainInput from '../components/MainInput';
 
-type toastType =  {
-  type: "success" | "error" | "warning",
+type ToastParams = {
+  type: "error" | "warning" | "success",
   title: string,
   message: string
+}
+
+type Props = {
+  toast: ({type, title, message}:ToastParams) => void,
+  playSound: (sound: 'success' | 'fail') => void
 }
 
 const useStyles = makeStyles({
@@ -37,27 +32,12 @@ const useStyles = makeStyles({
   }
 })
 
-export default function Callsigns():JSX.Element {
-  const toasterId = useId('toaster')
-  const { dispatchToast } = useToastController(toasterId)
+export default function Callsigns(props: Props) {
   const [ callsign, setCallsign ] = useState<{call: string, form: string}>({call: '', form: ''})
   const [ userInput, setuserInput ] = useState<string>('')
   const [ history, setHistory] = useState<{historicalWord: string, code: string[]}[]>([])
   const [ hintWord, setHintWord ] = useState<string>('')
-
-  const [failEffect] = useSound(fail)
-  const [successEffect] = useSound(success)
   const styles = useStyles();
-
-  const notify = ({ type, title, message}:toastType):void => {
-    dispatchToast(
-      <Toast>
-        <ToastTitle>{title}</ToastTitle>
-        <ToastBody>{message}</ToastBody>
-      </Toast>,
-      { position: 'top-end', intent: type}
-    )
-  }
 
   const generateCallsign = () => {
     const selection = callsignFormat[Math.floor(Math.random()*callsignFormat.length)]
@@ -78,8 +58,8 @@ export default function Callsigns():JSX.Element {
 
   const checkCallsign = () => {
     if(callsign.call === userInput.toUpperCase() && userInput.length > 0){
-      successEffect()
-      notify({type: "success", title: "Correct", message: "You have guessed the callsign correctly!"});
+      props.playSound('success')
+      props.toast({type: "success", title: "Correct", message: "You have guessed the callsign correctly!"});
       setHistory(history => [...history, {historicalWord: callsign.call, code: GenerateMorseSync(callsign.call)}])
       setHintWord('')
       setuserInput('')
@@ -89,8 +69,8 @@ export default function Callsigns():JSX.Element {
         }, 1000)
       }
     } else {
-      failEffect()
-      notify({type: "error", title: "Incorrect!", message: "You have not guessed the callsign correctly"});
+      props.playSound('fail')
+      props.toast({type: "error", title: "Incorrect!", message: "You have not guessed the callsign correctly"});
       setHintWord(userInput)
       setTimeout(() => {
         Oscillator(callsign.call)
@@ -100,7 +80,6 @@ export default function Callsigns():JSX.Element {
   
   return(
     <>
-      <Toaster toasterId={toasterId} />
       <div className='content-wrapper'>
         <div className="grid-box center">
           <Button appearance='primary' className={styles.mainButton} onClick={() => generateCallsign()}>Generate Callsign</Button>
