@@ -7,12 +7,6 @@ import {
   Option,
   Button,
   makeStyles,
-  Toaster,
-  Toast,
-  ToastTitle,
-  ToastBody,
-  useToastController,
-  useId,
   Body2,
   shorthands,
   Tooltip
@@ -48,15 +42,17 @@ const useStyles = makeStyles({
   }
 })
 
-type toastType = {
-  type: "success" | "error" | "warning",
+type ToastParams = {
+  type: "error" | "success" | "warning",
   title: string,
   message: string
 }
 
-export default function Koch(){
-  const toasterId = useId('toaster')
-  const { dispatchToast } = useToastController(toasterId)
+type Props = {
+  toast: ({type, title, message}: ToastParams) => void
+}
+
+export default function Koch(props: Props){
   const [userInput, setUserInput] = useState<string>('')
   const [level, setLevel] = useState<number>()
   const [charCount, setCharCount ] = useState<number>()
@@ -64,20 +60,10 @@ export default function Koch(){
   const [ solution, setSolution ] = useState<boolean>(false)
   const [generated, setGenerated] = useState<string>('')
   const styles = useStyles()
-
-  const notify = ({ type, title, message}:toastType):void => {
-    dispatchToast(
-      <Toast>
-        <ToastTitle>{title}</ToastTitle>
-        <ToastBody>{message}</ToastBody>
-      </Toast>,
-      { position: 'top-end', intent: type}
-    )
-  }
   
   const generateGame = () => {
     if(charCount == undefined || level == undefined){
-      notify({title: "Error", message: 'Please select both level and character count', type: 'error'})
+      props.toast({title: "Error", message: 'Please select both level and character count', type: 'error'})
       return
     }
     setDisabled(true)
@@ -112,7 +98,6 @@ export default function Koch(){
 
   return(
     <>
-      <Toaster toasterId={toasterId} />
       <div className="content-wrapper">
         <div className="grid-box">
           <Label id="level">Select Level:</Label>

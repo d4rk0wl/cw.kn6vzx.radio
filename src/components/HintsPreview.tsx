@@ -33,6 +33,15 @@ export default function HintsPreview({ userInput, word }:Props):JSX.Element{
     <>
       <div className={styles.wrapper}>
         {inputArray.map((item, index) => {
+          //Catch if statement for if more characters are entered than the word length... This can probably be cleaned up later
+          if(index >= wordArray.length){
+            return(
+              <div className={styles.incorrect} key={index}>
+                {item.toUpperCase()}
+              </div>
+            )
+          }
+
           if(item.toUpperCase() === wordArray[index].toUpperCase()){
             return(
               <div className={styles.correct} key={index}>

@@ -6,13 +6,7 @@ import {
   Button,
   Tooltip,
   InfoLabel,
-  makeStyles,
-  Toaster,
-  Toast,
-  ToastTitle,
-  ToastBody,
-  useToastController,
-  useId
+  makeStyles
 } from '@fluentui/react-components';
 
 import { Save24Regular } from '@fluentui/react-icons';
@@ -28,20 +22,19 @@ const useStyles = makeStyles({
   }
 })
 
-interface Props {
-  setdarkMode: () => void,
-  darkMode: boolean
-}
-
-type toastType =  {
+type ToastParams =  {
   type: "success" | "error" | "warning",
   title: string,
   message: string
 }
 
-export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
-  const toasterId = useId('toaster')
-  const { dispatchToast } = useToastController(toasterId)
+type Props = {
+  setdarkMode: () => void,
+  darkMode: boolean,
+  toast: ({type, title, message}: ToastParams) => void
+}
+
+export function Settings(props: Props):JSX.Element{
   const styles = useStyles()
   const [wpm, setWpm] = useState<number>(20)
   const [farnsworth, setFarnsworth] = useState<number>(0)
@@ -51,16 +44,6 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
   const [ autoplay, setAutoPlay ] = useState<boolean>(false)
   const [ cheatMode, setCheatMode ] = useState<boolean>(false)
   const [ disabled, setDisabled ] = useState<boolean>(false)
-
-  const notify = ({ type, title, message}:toastType):void => {
-    dispatchToast(
-      <Toast>
-        <ToastTitle>{title}</ToastTitle>
-        <ToastBody>{message}</ToastBody>
-      </Toast>,
-      { position: 'top-end', intent: type}
-    )
-  }
 
   useEffect(() => {
     setWpm(Number(window.localStorage.getItem('wpm')))
@@ -80,13 +63,12 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
     window.localStorage.setItem('auto_play', String(autoplay))
     window.localStorage.setItem('cheat_mode', String(cheatMode))
     window.localStorage.setItem('volume', String(volume * 0.01))
-    window.localStorage.setItem('darkMode', String(darkMode))
+    window.localStorage.setItem('darkMode', String(props.darkMode))
     setDisabled(true)
-    notify({ type: 'success', title: 'Settings Saved', message: 'Settings Saved Successfully'})
+    props.toast({ type: 'success', title: 'Settings Saved', message: 'Settings Saved Successfully'})
   }
   return(
     <>
-      <Toaster toasterId={toasterId} />
       <div className="settings">
         <div className='settings-content'>
           <Tooltip positioning={'below'} content="Adjust the Words Per Minute (WPM) of the morse code being played. This is the speed in which characters are transmitted" relationship='description'>
@@ -107,7 +89,7 @@ export function Settings({setdarkMode, darkMode}:Props):JSX.Element{
           <Slider value={volume} step={1} min={0} max={100} size={'medium'} onChange={(e) => setVolume(parseInt(e.target.value))} />
           <div className="switch-grid">
             <div className="settings-grid-box">
-              <Switch className={styles.switch} label={`Dark Theme`} onChange={() => setdarkMode()} checked={darkMode} />
+              <Switch className={styles.switch} label={`Dark Theme`} onChange={() => props.setdarkMode()} checked={props.darkMode} />
             </div>
             <div className="settings-grid-box">
               <InfoLabel className={styles.infoLabel} info={"When practicing words/callsigns/phrases, automatically play the next word without needing to lift your hands from the keyboard"}>
