@@ -53,7 +53,7 @@ export default function Words(props: Props){
   const checkWord = ():void => {
     if(userInput.toLowerCase() == word && userInput.length > 0) {
       props.playSound('success')
-      props.toast({type: "success", title: "Correct", message: "You have guessed the word correctly!"});
+      props.toast({type: "success", title: "Correct", message: `You have guessed the word correctly! ${word}`});
       setHistory(history => [...history, {historicalWord: word, code: GenerateMorseSync(word)}])
       clearAll()
       if(window.localStorage.getItem('auto_play') == 'true'){
