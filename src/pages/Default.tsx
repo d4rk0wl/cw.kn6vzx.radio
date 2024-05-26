@@ -1,7 +1,7 @@
 import {
   Display,
   Body2,
-  Title2,
+  Title3,
   Link,
   Image
 } from '@fluentui/react-components'
@@ -20,9 +20,9 @@ export default function Default():JSX.Element{
         <Display>Welcome</Display>
         <br />
         <div style={{ 'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center'}}>
-          <Title2 style={{ 'paddingBottom': '20px' }}>
+          <Title3 style={{ 'paddingBottom': '20px' }}>
             To begin, select a practice mode from the left-hand navigation. Additionally you can configure various settings such as Words Per Minute (wpm), Farnsworth spacing, and tone via the settings menu.
-          </Title2>
+          </Title3>
           <Body2 style={{ 'paddingBottom': '10px' }}>
             For now, this application works best on Chrome. Although usable inside Firefox and Safari, you may experience excessive clicking from the oscillator component. Improvements are being made to increase compatibility with other browsers.
           </Body2>
