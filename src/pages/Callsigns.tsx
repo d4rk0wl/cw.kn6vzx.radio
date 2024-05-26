@@ -59,7 +59,7 @@ export default function Callsigns(props: Props) {
   const checkCallsign = () => {
     if(callsign.call === userInput.toUpperCase() && userInput.length > 0){
       props.playSound('success')
-      props.toast({type: "success", title: "Correct", message: "You have guessed the callsign correctly!"});
+      props.toast({type: "success", title: "Correct", message: `You have guessed the callsign correctly! ${callsign.call}`});
       setHistory(history => [...history, {historicalWord: callsign.call, code: GenerateMorseSync(callsign.call)}])
       setHintWord('')
       setuserInput('')

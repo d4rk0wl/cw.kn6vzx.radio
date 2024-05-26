@@ -54,7 +54,7 @@ export default function Phrases(props: Props){
     if(phrase.code === userInput.toUpperCase() && userInput.length > 0){
       props.playSound('success')
       setHistory(history => [...history, {historicalWord: phrase.code, code: GenerateMorseSync(phrase.code), description: phrase.translation}])
-      props.toast({type: "success", title: "Correct", message: "You have guessed the phrase correctly!"});
+      props.toast({type: "success", title: "Correct", message: `You have guessed the phrase correctly! ${phrase.translation}`});
       setHintWord('')
       setUserInput('')
       if(window.localStorage.getItem('auto_play') == 'true'){
